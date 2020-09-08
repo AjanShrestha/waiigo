@@ -7,6 +7,7 @@ import (
 	"monkey/token"
 )
 
+// Parser stores the tokens
 type Parser struct {
 	l      *lexer.Lexer
 	errors []string
@@ -15,6 +16,7 @@ type Parser struct {
 	peekToken token.Token
 }
 
+// New creates the parser from lexer
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{
 		l:      l,
@@ -51,6 +53,7 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 	}
 }
 
+// Errors provides all the errors encountered
 func (p *Parser) Errors() []string {
 	return p.errors
 }
@@ -61,6 +64,7 @@ func (p *Parser) peekError(t token.TokenType) {
 	p.errors = append(p.errors, msg)
 }
 
+// ParseProgram parses the ast
 func (p *Parser) ParseProgram() *ast.Program {
 	program := &ast.Program{}
 	program.Statements = []ast.Statement{}
