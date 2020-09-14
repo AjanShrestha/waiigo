@@ -63,6 +63,24 @@ func (i *Identifier) String() string {
 	return i.Value
 }
 
+// Boolean node
+type Boolean struct {
+	Token token.Token
+	Value bool
+}
+
+func (b *Boolean) expressionNode() {}
+
+// TokenLiteral for Boolean
+func (b *Boolean) TokenLiteral() string {
+	return b.Token.Literal
+}
+
+// String returns the Boolean Node
+func (b *Boolean) String() string {
+	return b.Token.Literal
+}
+
 // LetStatement is the node for let statement
 type LetStatement struct {
 	Token token.Token // the token.Let Token
