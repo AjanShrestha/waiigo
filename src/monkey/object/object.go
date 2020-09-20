@@ -9,9 +9,10 @@ type ObjectType string
 
 // Constants for object type
 const (
-	INTEGEROBJ = "INTEGER"
-	BOOLEANOBJ = "BOOLEAN"
-	NULLOBJ    = "NULL"
+	INTEGEROBJ     = "INTEGER"
+	BOOLEANOBJ     = "BOOLEAN"
+	NULLOBJ        = "NULL"
+	RETURNVALUEOBJ = "RETURN_VALUE"
 )
 
 // Object provides the object functions
@@ -61,4 +62,19 @@ func (n *Null) Type() ObjectType {
 // Inspect returns the null value repr
 func (n *Null) Inspect() string {
 	return "null"
+}
+
+// ReturnValue for return
+type ReturnValue struct {
+	Value Object
+}
+
+// Type returns Return Type
+func (rv *ReturnValue) Type() ObjectType {
+	return RETURNVALUEOBJ
+}
+
+// Inspect returns the value of return
+func (rv *ReturnValue) Inspect() string {
+	return rv.Value.Inspect()
 }
