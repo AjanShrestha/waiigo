@@ -13,6 +13,7 @@ const (
 	BOOLEANOBJ     = "BOOLEAN"
 	NULLOBJ        = "NULL"
 	RETURNVALUEOBJ = "RETURN_VALUE"
+	ERROROBJ       = "ERROR"
 )
 
 // Object provides the object functions
@@ -77,4 +78,19 @@ func (rv *ReturnValue) Type() ObjectType {
 // Inspect returns the value of return
 func (rv *ReturnValue) Inspect() string {
 	return rv.Value.Inspect()
+}
+
+// Error represents error
+type Error struct {
+	Message string
+}
+
+// Type returns error type
+func (e *Error) Type() ObjectType {
+	return ERROROBJ
+}
+
+// Inspect returns error message
+func (e *Error) Inspect() string {
+	return "ERROR: " + e.Message
 }
