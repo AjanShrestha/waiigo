@@ -1,7 +1,10 @@
 package object
 
 import (
+	"bytes"
 	"fmt"
+	"monkey/ast"
+	"strings"
 )
 
 // ObjectType is the type for object
@@ -14,6 +17,7 @@ const (
 	NULLOBJ        = "NULL"
 	RETURNVALUEOBJ = "RETURN_VALUE"
 	ERROROBJ       = "ERROR"
+	FUNCTIONOBJ    = "FUNCTION"
 )
 
 // Object provides the object functions
@@ -112,8 +116,39 @@ func (e *Environment) Get(name string) (Object, bool) {
 	return obj, ok
 }
 
-// Set
+// Set sets env value
 func (e *Environment) Set(name string, val Object) Object {
 	e.store[name] = val
 	return val
+}
+
+// Function type for func
+type Function struct {
+	Parameters []*ast.Identifier
+	Body       *ast.BlockStatement
+	Env        *Environment
+}
+
+// Type returns the func type
+func (f *Function) Type() ObjectType {
+	return FUNCTIONOBJ
+}
+
+// Inspect returns the func repr
+func (f *Function) Inspect() string {
+	var out bytes.Buffer
+
+	params := []string{}
+	for _, p := range f.Parameters {
+		params = append(params, p.String())
+	}
+
+	out.WriteString("fn")
+	out.WriteString("(")
+	out.WriteString(strings.Join(params, ", "))
+	out.WriteString(") {\n")
+	out.WriteString(f.Body.String())
+	out.WriteString("\n}")
+
+	return out.String()
 }
