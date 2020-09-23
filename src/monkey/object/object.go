@@ -99,29 +99,6 @@ func (e *Error) Inspect() string {
 	return "ERROR: " + e.Message
 }
 
-// NewEnvironment creates a new environment
-func NewEnvironment() *Environment {
-	s := make(map[string]Object)
-	return &Environment{store: s}
-}
-
-// Environment keep tracks of all names and maps to object
-type Environment struct {
-	store map[string]Object
-}
-
-// Get returns the object associated with the name
-func (e *Environment) Get(name string) (Object, bool) {
-	obj, ok := e.store[name]
-	return obj, ok
-}
-
-// Set sets env value
-func (e *Environment) Set(name string, val Object) Object {
-	e.store[name] = val
-	return val
-}
-
 // Function type for func
 type Function struct {
 	Parameters []*ast.Identifier
