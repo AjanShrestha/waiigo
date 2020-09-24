@@ -41,9 +41,12 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		}
 		env.Set(node.Name.Value, val)
 
-		// Expressions
+	// Expressions
 	case *ast.IntegerLiteral:
 		return &object.Integer{Value: node.Value}
+
+	case *ast.StringLiteral:
+		return &object.String{Value: node.Value}
 
 	case *ast.Boolean:
 		return nativeBoolToBooleanObject(node.Value)
@@ -89,7 +92,6 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		}
 
 		return applyFunction(function, args)
-
 	}
 
 	return nil
@@ -294,10 +296,10 @@ func evalExpressions(
 }
 
 func applyFunction(
-	fn object.Object, 
+	fn object.Object,
 	args []object.Object,
 ) object.Object {
-	function, ok := fn.(*object.Function)	
+	function, ok := fn.(*object.Function)
 	if !ok {
 		return newError("no a function: %s", fn.Type())
 	}

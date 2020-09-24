@@ -12,12 +12,16 @@ type ObjectType string
 
 // Constants for object type
 const (
-	INTEGEROBJ     = "INTEGER"
-	BOOLEANOBJ     = "BOOLEAN"
-	NULLOBJ        = "NULL"
+	NULLOBJ  = "NULL"
+	ERROROBJ = "ERROR"
+
+	INTEGEROBJ = "INTEGER"
+	BOOLEANOBJ = "BOOLEAN"
+	STRINGOBJ  = "STRING"
+
 	RETURNVALUEOBJ = "RETURN_VALUE"
-	ERROROBJ       = "ERROR"
-	FUNCTIONOBJ    = "FUNCTION"
+
+	FUNCTIONOBJ = "FUNCTION"
 )
 
 // Object provides the object functions
@@ -128,4 +132,19 @@ func (f *Function) Inspect() string {
 	out.WriteString("\n}")
 
 	return out.String()
+}
+
+// String object
+type String struct {
+	Value string
+}
+
+// Type returns string object type
+func (s *String) Type() ObjectType {
+	return STRINGOBJ
+}
+
+// Inspect returns the string value
+func (s *String) Inspect() string {
+	return s.Value
 }
