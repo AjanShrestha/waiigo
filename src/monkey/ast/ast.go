@@ -343,3 +343,21 @@ func (ie *InfixExpression) String() string {
 
 	return out.String()
 }
+
+// StringLiteral represents string parsed structure
+type StringLiteral struct {
+	Token token.Token
+	Value string
+}
+
+func (sl *StringLiteral) expressionNode() {}
+
+// TokenLiteral returns the string token literal
+func (sl *StringLiteral) TokenLiteral() string {
+	return sl.Token.Literal
+}
+
+// String returns string repr
+func (sl *StringLiteral) String() string {
+	return sl.Token.Literal
+}
