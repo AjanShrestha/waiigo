@@ -7,6 +7,9 @@ import (
 	"strings"
 )
 
+// BuiltinFunction is the type defintion of callable Go Func
+type BuiltinFunction func(args ...Object) Object
+
 // ObjectType is the type for object
 type ObjectType string
 
@@ -22,6 +25,7 @@ const (
 	RETURNVALUEOBJ = "RETURN_VALUE"
 
 	FUNCTIONOBJ = "FUNCTION"
+	BUILTINOBJ  = "BUILTIN"
 )
 
 // Object provides the object functions
@@ -147,4 +151,19 @@ func (s *String) Type() ObjectType {
 // Inspect returns the string value
 func (s *String) Inspect() string {
 	return s.Value
+}
+
+// Builtin is the wrapper for Builtin Functions
+type Builtin struct {
+	Fn BuiltinFunction
+}
+
+// Type returns the Builtin Type
+func (b *Builtin) Type() ObjectType {
+	return BUILTINOBJ
+}
+
+// Inspect returns the Builtin repr
+func (b *Builtin) Inspect() string {
+	return "builtin function"
 }
