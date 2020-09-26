@@ -26,6 +26,8 @@ const (
 
 	FUNCTIONOBJ = "FUNCTION"
 	BUILTINOBJ  = "BUILTIN"
+
+	ARRAYOBJ = "ARRAY"
 )
 
 // Object provides the object functions
@@ -166,4 +168,30 @@ func (b *Builtin) Type() ObjectType {
 // Inspect returns the Builtin repr
 func (b *Builtin) Inspect() string {
 	return "builtin function"
+}
+
+// Array is the wrapper for array
+type Array struct {
+	Elements []Object
+}
+
+// Type returns the array type
+func (ao *Array) Type() ObjectType {
+	return ARRAYOBJ
+}
+
+// Inspect returns the array repr
+func (ao *Array) Inspect() string {
+	var out bytes.Buffer
+
+	elements := []string{}
+	for _, e := range ao.Elements {
+		elements = append(elements, e.Inspect())
+	}
+
+	out.WriteString("[")
+	out.WriteString(strings.Join(elements, ", "))
+	out.WriteString("]")
+
+	return out.String()
 }
