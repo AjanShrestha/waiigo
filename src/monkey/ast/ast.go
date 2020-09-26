@@ -370,7 +370,7 @@ type ArrayLiteral struct {
 
 func (al *ArrayLiteral) expressionNode() {}
 
-// TokenLiteral returns the array token litera
+// TokenLiteral returns the array token literal
 func (al *ArrayLiteral) TokenLiteral() string {
 	return al.Token.Literal
 }
@@ -387,6 +387,34 @@ func (al *ArrayLiteral) String() string {
 	out.WriteString("[")
 	out.WriteString(strings.Join(elements, ", "))
 	out.WriteString("]")
+
+	return out.String()
+}
+
+// IndexExpression provides structure for Array Indexing
+type IndexExpression struct {
+	Token token.Token // The [ token
+	Left  Expression
+	Index Expression
+}
+
+func (ie *IndexExpression) expressionNode() {}
+
+// TokenLiteral represents the Token literal
+func (ie *IndexExpression) TokenLiteral() string {
+	return ie.Token.Literal
+}
+
+// String represents the Array repr of that index
+func (ie *IndexExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("(")
+	out.WriteString(ie.Left.String())
+	out.WriteString("[")
+	out.WriteString(ie.Index.String())
+	out.WriteString("]")
+	out.WriteString(")")
 
 	return out.String()
 }
