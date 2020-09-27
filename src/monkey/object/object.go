@@ -3,6 +3,7 @@ package object
 import (
 	"bytes"
 	"fmt"
+	"hash/fnv"
 	"monkey/ast"
 	"strings"
 )
@@ -34,6 +35,38 @@ const (
 type Object interface {
 	Type() ObjectType
 	Inspect() string
+}
+
+// HashKey defines the hash structure
+type HashKey struct {
+	Type  ObjectType
+	Value uint64
+}
+
+// HashKey returns the boolean HashKey
+func (b *Boolean) HashKey() HashKey {
+	var value uint64
+
+	if b.Value {
+		value = 1
+	} else {
+		value = 0
+	}
+
+	return HashKey{Type: b.Type(), Value: value}
+}
+
+// HashKey returns the integer HashKey
+func (i *Integer) HashKey() HashKey {
+	return HashKey{Type: i.Type(), Value: uint64(i.Value)}
+}
+
+// HashKey returns the string HashKey
+func (s *String) HashKey() HashKey {
+	h := fnv.New64a()
+	h.Write([]byte(s.Value))
+
+	return HashKey{Type: s.Type(), Value: h.Sum64()}
 }
 
 // Integer is for int data type
