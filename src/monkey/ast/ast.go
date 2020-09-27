@@ -418,3 +418,32 @@ func (ie *IndexExpression) String() string {
 
 	return out.String()
 }
+
+// HashLiteral provides structure for hash
+type HashLiteral struct {
+	Token token.Token // the '{' token
+	Pairs map[Expression]Expression
+}
+
+func (hl *HashLiteral) expressionNode() {}
+
+// TokenLiteral returns the hash token literal
+func (hl *HashLiteral) TokenLiteral() string {
+	return hl.Token.Literal
+}
+
+// String returns the hash literal repr
+func (hl *HashLiteral) String() string {
+	var out bytes.Buffer
+
+	pairs := []string{}
+	for key, value := range hl.Pairs {
+		pairs = append(pairs, key.String()+":"+value.String())
+	}
+
+	out.WriteString("{")
+	out.WriteString(strings.Join(pairs, ", "))
+	out.WriteString("}")
+
+	return out.String()
+}
