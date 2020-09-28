@@ -139,7 +139,7 @@ if (10 > 1) {
 		testIntegerObject(t, evaluated, tt.expected)
 	}
 }
-func TestErrorHanlding(t *testing.T) {
+func TestErrorHandling(t *testing.T) {
 	tests := []struct {
 		input           string
 		expectedMessage string
@@ -187,6 +187,10 @@ if (10 > 1) {
 		{
 			`"Hello" - "World"`,
 			"unknown operator: STRING - STRING",
+		},
+		{
+			`{"name": "Monkey"}[fn(x) { x }];`,
+			"unusable as hash key: FUNCTION",
 		},
 	}
 
@@ -467,6 +471,52 @@ func TestHashLiterals(t *testing.T) {
 		}
 
 		testIntegerObject(t, pair.Value, expectedValue)
+	}
+}
+
+func TestHashIndexExpression(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{
+			`{"foo": 5}["foo"]`,
+			5,
+		},
+		{
+			`{"foo": 5}["bar"]`,
+			nil,
+		},
+		{
+			`let key = "foo"; {"foo": 5}[key]`,
+			5,
+		},
+		{
+			`{}["foo"]`,
+			nil,
+		},
+		{
+			`{5: 5}[5]`,
+			5,
+		},
+		{
+			`{true: 5}[true]`,
+			5,
+		},
+		{
+			`{false: 5}[false]`,
+			5,
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		integer, ok := tt.expected.(int)
+		if ok {
+			testIntegerObject(t, evaluated, int64(integer))
+		} else {
+			testNullObject(t, evaluated)
+		}
 	}
 }
 
